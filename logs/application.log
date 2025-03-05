@@ -1,0 +1,5 @@
+2025-03-05 14:49:33.077 [main] INFO  com.zaxxer.hikari.HikariDataSource - MemberPool - Starting...
+2025-03-05 14:49:33.449 [main] INFO  com.zaxxer.hikari.pool.HikariPool - MemberPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@61078690
+2025-03-05 14:49:33.451 [main] INFO  com.zaxxer.hikari.HikariDataSource - MemberPool - Start completed.
+2025-03-05 14:49:33.469 [main] INFO  t.jdbc.connection.ConnectionTest - connection=HikariProxyConnection@1200048933 wrapping com.mysql.cj.jdbc.ConnectionImpl@61078690, class=class com.zaxxer.hikari.pool.HikariProxyConnection
+2025-03-05 14:49:33.474 [main] INFO  t.jdbc.connection.ConnectionTest - connection=HikariProxyConnection@566641954 wrapping com.mysql.cj.jdbc.ConnectionImpl@7997b197, class=class com.zaxxer.hikari.pool.HikariProxyConnection
