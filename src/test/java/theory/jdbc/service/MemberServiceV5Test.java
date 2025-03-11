@@ -1,10 +1,5 @@
 package theory.jdbc.service;
 
-
-import static theory.jdbc.connection.ConnectionConst.PASSWORD;
-import static theory.jdbc.connection.ConnectionConst.URL;
-import static theory.jdbc.connection.ConnectionConst.USERNAME;
-
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -18,16 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import lombok.extern.slf4j.Slf4j;
 import theory.jdbc.domain.Member;
 import theory.jdbc.repository.MemberRepositoryV3;
 
-/**     
- * 기본 동작,  트랜잭션이 없어서 문제 발생
+/**
+ * 기본 동작, 트랜잭션이 없어서 문제 발생
  */
 @Slf4j
 @SpringBootTest
@@ -44,19 +36,15 @@ public class MemberServiceV5Test {
 
     @TestConfiguration
     static class TestConfig {
-        @Bean
-        DataSource dataSource() {
-            return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+        private final DataSource dataSource;
+
+        public TestConfig(DataSource dataSource) {
+            this.dataSource = dataSource;
         }
 
         @Bean
-        PlatformTransactionManager transactionManager() {
-            return new DataSourceTransactionManager(dataSource());
-        }
-
-        @Bean
-        MemberRepositoryV3 memberRepositoryV3() {
-            return new MemberRepositoryV3(dataSource());
+        public MemberRepositoryV3 memberRepositoryV3() {
+            return new MemberRepositoryV3(dataSource);
         }
 
         @Bean
@@ -95,7 +83,7 @@ public class MemberServiceV5Test {
         // then
         Member findMemberA = memberRepository.findById(memberA.getMemberId());
         Member findMemberB = memberRepository.findById(memberB.getMemberId());
-        
+
         Assertions.assertThat(findMemberA.getMoney()).isEqualTo(8000);
         Assertions.assertThat(findMemberB.getMoney()).isEqualTo(12000);
     }
@@ -110,15 +98,16 @@ public class MemberServiceV5Test {
         memberRepository.save(memberB);
 
         // when
-        Assertions.assertThatThrownBy(() -> memberService.accountTransfer(memberA.getMemberId(), memberB.getMemberId(), 2000))
-            .isInstanceOf(IllegalStateException.class);
+        Assertions
+                .assertThatThrownBy(
+                        () -> memberService.accountTransfer(memberA.getMemberId(), memberB.getMemberId(), 2000))
+                .isInstanceOf(IllegalStateException.class);
 
         // then
         Member findMemberA = memberRepository.findById(memberA.getMemberId());
         Member findMemberB = memberRepository.findById(memberB.getMemberId());
-        
+
         Assertions.assertThat(findMemberA.getMoney()).isEqualTo(10000);
         Assertions.assertThat(findMemberB.getMoney()).isEqualTo(10000);
     }
 }
-
