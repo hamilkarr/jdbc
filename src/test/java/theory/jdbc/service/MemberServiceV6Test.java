@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import lombok.extern.slf4j.Slf4j;
 import theory.jdbc.domain.Member;
 import theory.jdbc.repository.MemberRepository;
-import theory.jdbc.repository.MemberRepositoryV4;
+import theory.jdbc.repository.MemberRepositoryV5;
 
 @Slf4j
 @SpringBootTest
@@ -42,7 +42,7 @@ public class MemberServiceV6Test {
 
         @Bean
         public MemberRepository memberRepository() {
-            return new MemberRepositoryV4(dataSource);
+            return new MemberRepositoryV5(dataSource);
         }
 
         @Bean
